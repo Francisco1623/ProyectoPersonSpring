@@ -55,16 +55,23 @@
                 <form th:object="${person}" method="post">
                 <span th:if="${error}" th:text="${error}"></span>
 
+				<div class="form-group mb-3" th:classappend="${#fields.hasErrors('name')} ? ' has-error'">
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
                         <input type="text" class="form-control" th:field="*{name}" th:attr="disabled=${action=='viewMore' or action=='delete'}" placeholder="Ingrese el nombre">
                     </div>
-
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger small"></span>
+				</div>
+				<div class="form-group mb-3" th:classappend="${#fields.hasErrors('surnames')} ? ' has-error'">
                     <div class="mb-3">
                         <label class="form-label">Apellidos</label>
                         <input type="text" class="form-control" th:field="*{surnames}" th:attr="disabled=${action=='viewMore' or action=='delete'}" placeholder="Ingrese los apellidos" >
                     </div>
-
+                    <span th:if="${#fields.hasErrors('surnames')}" th:errors="*{surnames}" class="text-danger small"></span>
+                    
+				</div>
+				<div class="form-group mb-3" th:classappend="${#fields.hasErrors('sex')} ? ' has-error'">
+				
                     <div class="mb-3">
                         <label class="form-label">Sexo</label>
                         <select class="form-select" th:field="*{sex}" th:attr="disabled=${action=='viewMore' or action=='delete'}" >
@@ -73,7 +80,9 @@
                             <option value="1">Femenino</option>
                         </select>
                     </div>
-
+                  	<span th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="text-danger small"></span>
+                    
+				</div>
                     <div class="d-grid mt-4" th:if="${action=='add' || action=='edit'}">
                         <button type="submit" class="btn btn-custom">Guardar</button>
                     </div>

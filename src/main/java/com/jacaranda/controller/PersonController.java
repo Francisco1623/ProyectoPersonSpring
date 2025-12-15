@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class PersonController {
 			model.addAttribute("error",e.getMessage());
 
 		}
-		return "formPerson";
+		return "/formPerson";
 	}
 	
 	@GetMapping("/deletePerson")
@@ -93,9 +94,13 @@ public class PersonController {
 	}
 	
 	@PostMapping("/editPerson")
-	public String editPersonPost(Model model,@ModelAttribute Person p) {
+	public String editPersonPost(Model model,@Validated @ModelAttribute Person p,BindingResult b,@RequestParam Optional<String> action) {
 		try {
-			
+			if(b.hasErrors()) {
+				model.addAttribute("action", action.orElse(null));
+
+				return "formPerson";
+			}
 			personService.editPerson(p);
 			model.addAttribute("person", p);
 			model.addAttribute("listPerson",personService.getPersons());
@@ -121,9 +126,13 @@ public class PersonController {
 	}
 	
 	@PostMapping("/addPerson")
-	public String addPersonPost(Model model,@ModelAttribute Person p,@RequestParam Optional<String> action) {
+	public String addPersonPost(Model model,@Validated @ModelAttribute Person p,BindingResult b,@RequestParam Optional<String> action) {
 		try {
-			
+			if(b.hasErrors()) {
+				model.addAttribute("action", action.orElse(null));
+
+				return "formPerson";
+			}
 			personService.addPerson(p);
 			model.addAttribute("person", p);
 			model.addAttribute("listPerson",personService.getPersons());
