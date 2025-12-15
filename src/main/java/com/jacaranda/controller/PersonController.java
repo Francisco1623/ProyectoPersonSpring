@@ -47,7 +47,7 @@ public class PersonController {
 			model.addAttribute("error",e.getMessage());
 
 		}
-		return "/formPerson";
+		return "formPerson";
 	}
 	
 	@GetMapping("/deletePerson")
